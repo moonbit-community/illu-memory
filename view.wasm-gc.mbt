@@ -136,7 +136,7 @@ pub impl Instruction for UInt16 with length(view) {
 
 ///|
 pub impl Instruction for Int16 with load(view, index) {
-  load_uint16(view.0, index).to_int().to_int16()
+  Int16::from_int(load_uint16(view.0, index).to_int())
 }
 
 ///|
