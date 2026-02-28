@@ -10,7 +10,7 @@ Low-level memory operation library providing typed views over raw byte buffers w
 
 The `Memory` type represents a contiguous block of bytes, providing basic operations for raw memory access.
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "basic memory operations" {
   // Create a 16-byte memory block initialized with zeros
@@ -31,7 +31,7 @@ test "basic memory operations" {
 
 The `View[T]` type provides typed access to memory regions, allowing you to work with different data types while maintaining memory efficiency. It supports various integer types through the `Instruction` trait.
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "basic view operations" {
   let memory = @memory.Memory::make(16, 0)
@@ -52,7 +52,7 @@ The package supports multiple integer types via the `Instruction` trait:
 
 ### 32-bit Types
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "32-bit integer operations" {
   let memory = @memory.Memory::make(16, 0)
@@ -76,7 +76,7 @@ test "32-bit integer operations" {
 
 ### 16-bit Types
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "16-bit integer operations" {
   let memory = @memory.Memory::make(16, 0)
@@ -102,7 +102,7 @@ test "16-bit integer operations" {
 
 ### 64-bit Types
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "64-bit integer operations" {
   let memory = @memory.Memory::make(32, 0)
@@ -133,7 +133,7 @@ test "64-bit integer operations" {
 
 This design choice ensures consistent behavior across platforms and simplifies the API, making it ideal for applications that work primarily with little-endian data (which includes most modern processors and network protocols).
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "little-endian memory layout demonstration" {
   let memory = @memory.Memory::make(8, 0)
@@ -158,7 +158,7 @@ test "little-endian memory layout demonstration" {
 
 You can reinterpret the same memory region with different types, useful for low-level data manipulation.
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "type reinterpretation" {
   let memory = @memory.Memory::make(16, 0)
@@ -183,7 +183,7 @@ test "type reinterpretation" {
 
 You can work with the same memory using different view sizes for complex data structures.
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "mixed size operations" {
   let memory = @memory.Memory::make(16, 0)
@@ -211,7 +211,7 @@ test "mixed size operations" {
 
 Memory blocks are properly zero-initialized when created.
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "zero initialization verification" {
   let memory = @memory.Memory::make(16, 0)
