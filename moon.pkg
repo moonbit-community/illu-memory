@@ -1,0 +1,11 @@
+warnings = "-unused_value-unused_type_declaration-missing_priv-unused_constructor-unused_type_variable"
+
+options(
+  targets: {
+    "moonbit_runtime.native.mbt": [ "native" ],
+    "moonbit_runtime.wasm.mbt": [ "wasm" ],
+    "view.js.mbt": [ "js" ],
+    "view.wasm-gc.mbt": [ "wasm-gc" ],
+    "view_moonbit_runtime.mbt": [ "wasm", "native" ],
+  },
+)
