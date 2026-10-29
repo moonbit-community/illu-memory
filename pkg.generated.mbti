@@ -7,26 +7,29 @@ package "illusory0x0/memory"
 
 // Types and methods
 type Memory
-pub fn Memory::length(Self) -> Int
-pub fn Memory::make(Int, Byte) -> Self
-pub fn Memory::op_get(Self, Int) -> Byte
-pub fn Memory::op_set(Self, Int, Byte) -> Unit
+#alias("_[_]")
+pub fn Memory::get(Self, Int32) -> Byte
+pub fn Memory::length(Self) -> Int32
+pub fn Memory::make(Int32, Byte) -> Self
+#alias("_[_]=_")
+pub fn Memory::set(Self, Int32, Byte) -> Unit
 
 type View[T]
 pub fn[T : Instruction] View::from_memory(Memory) -> Self[T]
-pub fn[T : Instruction] View::length(Self[T]) -> Int
-pub fn[T : Instruction] View::op_get(Self[T], Int) -> T
-pub fn[T : Instruction] View::op_set(Self[T], Int, T) -> Unit
+#alias("_[_]")
+pub fn[T : Instruction] View::get(Self[T], Int32) -> T
+pub fn[T : Instruction] View::length(Self[T]) -> Int32
+#alias("_[_]=_")
+pub fn[T : Instruction] View::set(Self[T], Int32, T) -> Unit
 pub fn[T : Instruction] View::to_memory(Self[T]) -> Memory
 
 // Type aliases
 
 // Traits
 trait Instruction
-pub impl Instruction for Int
+pub impl Instruction for Int32
 pub impl Instruction for Int16
 pub impl Instruction for Int64
-pub impl Instruction for UInt
+pub impl Instruction for UInt32
 pub impl Instruction for UInt16
 pub impl Instruction for UInt64
-

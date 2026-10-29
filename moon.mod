@@ -1,0 +1,26 @@
+name = "illusory0x0/memory"
+
+version = "0.1.2"
+
+readme = "README.mbt.md"
+
+repository = "https://github.com/moonbit-community/illu-memory"
+
+license = "Apache-2.0"
+
+keywords = [
+  "memory",
+  "low-level",
+  "bytes",
+  "view",
+  "typed-memory",
+  "binary",
+  "little-endian",
+  "buffer",
+  "system-programming",
+  "performance",
+]
+
+description = "Low-level memory operation library providing typed views over raw byte buffers with support for various integer types and endianness control"
+
+source = "."
