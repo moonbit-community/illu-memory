@@ -4,7 +4,7 @@ fn bytes_of_memory(memory : @memory.Memory) -> Bytes = "%identity"
 ///|
 test "basic Int view operations" {
   let memory = @memory.Memory::make(16, 0)
-  let view : @memory.View[Int] = @memory.View::from_memory(memory)
+  let view : @memory.View[Int32] = @memory.View::from_memory(memory)
   view[0] = 1
   view[1] = 2
   view[2] = 3
@@ -22,7 +22,7 @@ test "basic Int view operations" {
 ///|
 test "UInt view operations" {
   let memory = @memory.Memory::make(16, 0)
-  let view : @memory.View[UInt] = @memory.View::from_memory(memory)
+  let view : @memory.View[UInt32] = @memory.View::from_memory(memory)
   view[0] = 0xFFFFFFFFU
   view[1] = 0x12345678U
   view[2] = 0U
@@ -122,7 +122,7 @@ test "UInt64 view operations" {
 test "view length calculation for different types" {
   // Test that different view types have correct length calculation
   let memory32 = @memory.Memory::make(32, 0)
-  let int_view : @memory.View[Int] = @memory.View::from_memory(memory32)
+  let int_view : @memory.View[Int32] = @memory.View::from_memory(memory32)
   inspect(int_view.length(), content="8") // 32 bytes / 4 bytes per Int
   let int16_view : @memory.View[Int16] = @memory.View::from_memory(memory32)
   inspect(int16_view.length(), content="16") // 32 bytes / 2 bytes per Int16
@@ -133,7 +133,7 @@ test "view length calculation for different types" {
 ///|
 test "view bounds and edge cases" {
   let memory = @memory.Memory::make(8, 0)
-  let view : @memory.View[Int] = @memory.View::from_memory(memory)
+  let view : @memory.View[Int32] = @memory.View::from_memory(memory)
 
   // Test boundary values
   view[0] = -2147483648 // Int32 min
@@ -148,10 +148,10 @@ test "view type conversion consistency" {
   let memory = @memory.Memory::make(16, 0)
 
   // Write as Int, read as UInt to test memory layout
-  let int_view : @memory.View[Int] = @memory.View::from_memory(memory)
+  let int_view : @memory.View[Int32] = @memory.View::from_memory(memory)
   int_view[0] = -1
   int_view[1] = 0x12345678
-  let uint_view : @memory.View[UInt] = @memory.View::from_memory(
+  let uint_view : @memory.View[UInt32] = @memory.View::from_memory(
     int_view.to_memory(),
   )
   inspect(uint_view[0], content="4294967295") // -1 as UInt
@@ -178,7 +178,7 @@ test "mixed size view operations" {
   let int16_view : @memory.View[Int16] = @memory.View::from_memory(memory)
 
   // Read with Int view (should combine pairs of Int16 values)
-  let int_view : @memory.View[Int] = @memory.View::from_memory(
+  let int_view : @memory.View[Int32] = @memory.View::from_memory(
     int16_view.to_memory(),
   )
   inspect(int_view[0], content="1450709556") // 0x56781234 in little-endian
@@ -188,11 +188,31 @@ test "mixed size view operations" {
 ///|
 test "zero initialization" {
   let memory = @memory.Memory::make(16, 0)
-  let view : @memory.View[Int] = @memory.View::from_memory(memory)
+  let view : @memory.View[Int32] = @memory.View::from_memory(memory)
 
   // Memory should be zero-initialized
   inspect(view[0], content="0")
   inspect(view[1], content="0")
   inspect(view[2], content="0")
   inspect(view[3], content="0")
+}
+
+///|
+test "64-bit views preserve little-endian bytes and shared memory" {
+  let memory = @memory.Memory::make(16, 0)
+  let unsigned : @memory.View[UInt64] = @memory.View::from_memory(memory)
+  let signed : @memory.View[Int64] = @memory.View::from_memory(memory)
+  unsigned[0] = 0x1122334455667788UL
+  let expected : Array[Byte] = [0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11]
+  for i = 0; i < 8; i = i + 1 {
+    assert_eq(memory[i], expected[i])
+  }
+  assert_eq(signed[0], 0x1122334455667788L)
+  signed[1] = -1L
+  assert_eq(unsigned[1], 0xFFFFFFFFFFFFFFFFUL)
+  for i = 8; i < 16; i = i + 1 {
+    assert_eq(memory[i], 0xFF)
+  }
+  memory[0] = 0xFF
+  assert_eq(unsigned[0], 0x11223344556677FFUL)
 }

@@ -2,7 +2,7 @@ name = "illusory0x0/memory"
 
 version = "0.1.2"
 
-readme = "README.md"
+readme = "README.mbt.md"
 
 repository = "https://github.com/moonbit-community/illu-memory"
 

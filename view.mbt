@@ -1,14 +1,16 @@
 ///|
-pub fn[T : Instruction] View::op_set(
+#alias("_[_]=_")
+pub fn[T : Instruction] View::set(
   view : View[T],
-  index : Int,
+  index : Int32,
   value : T,
 ) -> Unit {
   Instruction::store(view, index, value)
 }
 
 ///|
-pub fn[T : Instruction] View::op_get(view : View[T], index : Int) -> T {
+#alias("_[_]")
+pub fn[T : Instruction] View::get(view : View[T], index : Int32) -> T {
   Instruction::load(view, index)
 }
 
